@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Guessing Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hangman-container {
+            font-family: monospace;
+            white-space: pre;
+            line-height: 1;
+        }
+        .letter-box {
+            transition: all 0.3s ease;
+        }
+        .letter-box:hover {
+            transform: scale(1.1);
+        }
+        .keyboard-key {
+            transition: all 0.2s ease;
+        }
+        .keyboard-key:hover {
+            transform: scale(1.1);
+        }
+        .keyboard-key.used {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        .language-selector {
+            transition: all 0.3s ease;
+        }
+        .language-selector.active {
+            background-color: #4F46E5;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8 text-indigo-600">Word Guessing Game</h1>
+        
+        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
+            <div class="flex justify-center mb-6">
+                <div class="language-selector active px-4 py-2 rounded-l-lg cursor-pointer" data-lang="english">English</div>
+                <div class="language-selector px-4 py-2 cursor-pointer" data-lang="chinese">中文</div>
+                <div class="language-selector px-4 py-2 cursor-pointer" data-lang="japanese">日本語</div>
+                <div class="language-selector px-4 py-2 rounded-r-lg cursor-pointer" data-lang="korean">한국어</div>
+            </div>
+            
+            <div class="text-center mb-8">
+                <div id="hangman" class="hangman-container text-2xl mb-4"></div>
+                <div id="word-display" class="text-4xl font-mono mb-4 flex justify-center gap-4"></div>
+                <div id="tries" class="text-xl text-gray-600 mb-4"></div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-2" id="used-letters-title">Used Letters:</h2>
+                <div id="used-letters" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-2" id="keyboard-title">Keyboard:</h2>
+                <div id="keyboard" class="grid grid-cols-7 gap-2"></div>
+            </div>
+
+            <div class="text-center">
+                <button id="hint-btn" class="bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition-colors mb-4">
+                    Get Hint
+                </button>
+                <div id="hint-content" class="hidden mb-4 p-4 bg-purple-100 rounded-lg">
+                    <p id="translation" class="text-lg font-semibold text-purple-800"></p>
+                    <p id="hint-text" class="text-gray-700"></p>
+                </div>
+                <button id="new-game-btn" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                    New Game
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game data with translations in multiple languages
+        const WORDS = [
+            {
+                "word": "PYTHON",
+                "english": "Python Programming Language",
+                "chinese": "Python编程语言",
+                "japanese": "Pythonプログラミング言語",
+                "korean": "파이썬 프로그래밍 언어",
+                "hint": "A popular programming language known for its simple and readable syntax"
+            },
+            {
+                "word": "JAVASCRIPT",
+                "english": "JavaScript Programming Language",
+                "chinese": "JavaScript编程语言",
+                "japanese": "JavaScriptプログラミング言語",
+                "korean": "자바스크립트 프로그래밍 언어",
+                "hint": "The most commonly used programming language for web development"
+            },
+            {
+                "word": "PROGRAMMING",
+                "english": "Programming",
+                "chinese": "编程",
+                "japanese": "プログラミング",
+                "korean": "프로그래밍",
+                "hint": "The process of creating computer programs"
+            },
+            {
+                "word": "COMPUTER",
+                "english": "Computer",
+                "chinese": "计算机",
+                "japanese": "コンピュータ",
+                "korean": "컴퓨터",
+                "hint": "An electronic device for processing and storing data"
+            },
+            {
+                "word": "ALGORITHM",
+                "english": "Algorithm",
+                "chinese": "算法",
+                "japanese": "アルゴリズム",
+                "korean": "알고리즘",
+                "hint": "A step-by-step procedure for solving a problem"
+            },
+            {
+                "word": "DATABASE",
+                "english": "Database",
+                "chinese": "数据库",
+                "japanese": "データベース",
+                "korean": "데이터베이스",
+                "hint": "A system for storing and organizing data"
+            },
+            {
+                "word": "NETWORK",
+                "english": "Network",
+                "chinese": "网络",
+                "japanese": "ネットワーク",
+                "korean": "네트워크",
+                "hint": "A system that connects computers and other devices"
+            },
+            {
+                "word": "INTERNET",
+                "english": "Internet",
+                "chinese": "互联网",
+                "japanese": "インターネット",
+                "korean": "인터넷",
+                "hint": "A global system of interconnected computer networks"
+            },
+            {
+                "word": "KEYBOARD",
+                "english": "Keyboard",
+                "chinese": "键盘",
+                "japanese": "キーボード",
+                "korean": "키보드",
+                "hint": "An input device for typing text and commands"
+            },
+            {
+                "word": "MONITOR",
+                "english": "Monitor",
+                "chinese": "显示器",
+                "japanese": "モニター",
+                "korean": "모니터",
+                "hint": "A display device for computer output"
+            },
+            {
+                "word": "DEVELOPER",
+                "english": "Developer",
+                "chinese": "开发者",
+                "japanese": "開発者",
+                "korean": "개발자",
+                "hint": "A person who creates and maintains software"
+            },
+            {
+                "word": "CODING",
+                "english": "Coding",
+                "chinese": "编码",
+                "japanese": "コーディング",
+                "korean": "코딩",
+                "hint": "The process of writing computer programs"
+            },
+            {
+                "word": "HACKER",
+                "english": "Hacker",
+                "chinese": "黑客",
+                "japanese": "ハッカー",
+                "korean": "해커",
+                "hint": "A person skilled in computer systems, can be a security expert"
+            },
+            {
+                "word": "GAMING",
+                "english": "Gaming",
+                "chinese": "游戏",
+                "japanese": "ゲーミング",
+                "korean": "게이밍",
+                "hint": "The activity of playing electronic games"
+            }
+        ];
+
+        // UI text translations
+        const UI_TEXT = {
+            english: {
+                title: "Word Guessing Game",
+                usedLetters: "Used Letters:",
+                keyboard: "Keyboard:",
+                hint: "Get Hint",
+                newGame: "New Game",
+                triesLeft: "Tries Left:",
+                win: "Congratulations! You won!\nWord was:",
+                lose: "Game Over!\nWord was:",
+                hintUsed: "Hint already used",
+                letterUsed: "This letter has already been used",
+                translation: "Translation:"
+            },
+            chinese: {
+                title: "单词猜猜猜游戏",
+                usedLetters: "已使用的字母:",
+                keyboard: "键盘:",
+                hint: "获取提示",
+                newGame: "新游戏",
+                triesLeft: "剩余次数:",
+                win: "恭喜！你赢了！\n单词是:",
+                lose: "游戏结束！\n单词是:",
+                hintUsed: "提示已使用",
+                letterUsed: "这个字母已经用过了",
+                translation: "中文翻译:"
+            },
+            japanese: {
+                title: "単語当てゲーム",
+                usedLetters: "使用済みの文字:",
+                keyboard: "キーボード:",
+                hint: "ヒントを取得",
+                newGame: "新しいゲーム",
+                triesLeft: "残り回数:",
+                win: "おめでとう！勝ちました！\n単語は:",
+                lose: "ゲームオーバー！\n単語は:",
+                hintUsed: "ヒントは既に使用されています",
+                letterUsed: "この文字は既に使用されています",
+                translation: "日本語訳:"
+            },
+            korean: {
+                title: "단어 맞추기 게임",
+                usedLetters: "사용된 글자:",
+                keyboard: "키보드:",
+                hint: "힌트 얻기",
+                newGame: "새 게임",
+                triesLeft: "남은 횟수:",
+                win: "축하합니다! 승리했습니다!\n단어는:",
+                lose: "게임 오버!\n단어는:",
+                hintUsed: "힌트가 이미 사용되었습니다",
+                letterUsed: "이 글자는 이미 사용되었습니다",
+                translation: "한국어 번역:"
+            }
+        };
+
+        let gameId = Date.now().toString();
+        let gameState = {
+            wordDisplay: [],
+            tries: 6,
+            usedLetters: [],
+            gameOver: false,
+            currentWord: null,
+            currentLanguage: 'english',
+            hintUsed: false
+        };
+
+        const hangmanStages = [
+            `💀
+/|\\
+/ | \\
+/  |  \\
+   |
+   |
+  / \\
+ /   \\`,
+            `😱
+/|\\
+/ | \\
+/  |  \\
+   |
+   |
+  / \\
+ /   `,
+            `😨
+/|\\
+/ | \\
+/  |  \\
+   |
+   |
+  / 
+ /   `,
+            `😰
+/|\\
+/ | \\
+/  |  \\
+   |
+   |
+   
+  /   `,
+            `😅
+/|\\
+/ | \\
+/  |  \\
+   |
+   |
+   
+   `,
+            `😊
+/|\\
+/ | \\
+/  |  \\
+   |
+   
+   
+   `,
+            `😎
+/|\\
+/ | \\
+/  |  
+   |
+   
+   
+   `
+        ];
+
+        function updateHangman() {
+            document.getElementById('hangman').textContent = hangmanStages[6 - gameState.tries];
+        }
+
+        function updateWordDisplay() {
+            const wordDisplay = document.getElementById('word-display');
+            wordDisplay.innerHTML = gameState.wordDisplay
+                .map(letter => `<div class="letter-box w-12 h-12 flex items-center justify-center border-2 border-indigo-500 rounded-lg text-2xl">${letter}</div>`)
+                .join('');
+        }
+
+        function updateUsedLetters() {
+            const usedLettersDiv = document.getElementById('used-letters');
+            usedLettersDiv.innerHTML = gameState.usedLetters
+                .map(letter => `<span class="px-3 py-1 bg-gray-200 rounded-full">${letter}</span>`)
+                .join('');
+        }
+
+        function updateKeyboard() {
+            const keyboard = document.getElementById('keyboard');
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+            keyboard.innerHTML = alphabet
+                .map(letter => `
+                    <button class="keyboard-key px-4 py-2 bg-indigo-100 rounded-lg hover:bg-indigo-200 ${gameState.usedLetters.includes(letter) ? 'used' : ''}"
+                            ${gameState.usedLetters.includes(letter) || gameState.gameOver ? 'disabled' : ''}
+                            onclick="guessLetter('${letter}')">
+                        ${letter}
+                    </button>
+                `)
+                .join('');
+        }
+
+        function updateTries() {
+            document.getElementById('tries').textContent = `${UI_TEXT[gameState.currentLanguage].triesLeft} ${gameState.tries}`;
+        }
+
+        function updateUIText() {
+            document.querySelector('h1').textContent = UI_TEXT[gameState.currentLanguage].title;
+            document.getElementById('used-letters-title').textContent = UI_TEXT[gameState.currentLanguage].usedLetters;
+            document.getElementById('keyboard-title').textContent = UI_TEXT[gameState.currentLanguage].keyboard;
+            document.getElementById('hint-btn').textContent = UI_TEXT[gameState.currentLanguage].hint;
+            document.getElementById('new-game-btn').textContent = UI_TEXT[gameState.currentLanguage].newGame;
+            updateTries();
+        }
+
+        function startNewGame() {
+            const wordData = WORDS[Math.floor(Math.random() * WORDS.length)];
+            gameState.currentWord = wordData;
+            
+            gameState = {
+                wordDisplay: Array(wordData.word.length).fill('_'),
+                tries: 6,
+                usedLetters: [],
+                gameOver: false,
+                currentWord: wordData,
+                currentLanguage: gameState.currentLanguage,
+                hintUsed: false
+            };
+            
+            document.getElementById('hint-content').classList.add('hidden');
+            document.getElementById('hint-btn').disabled = false;
+            
+            updateGame();
+        }
+
+        function guessLetter(letter) {
+            if (gameState.gameOver || gameState.usedLetters.includes(letter)) {
+                const wordDisplay = document.getElementById('word-display');
+                wordDisplay.classList.add('shake');
+                setTimeout(() => wordDisplay.classList.remove('shake'), 500);
+                return;
+            }
+            
+            gameState.usedLetters.push(letter);
+            
+            if (gameState.currentWord.word.includes(letter)) {
+                // Update word display with the correct letter
+                const newWordDisplay = [...gameState.wordDisplay];
+                for (let i = 0; i < gameState.currentWord.word.length; i++) {
+                    if (gameState.currentWord.word[i] === letter) {
+                        newWordDisplay[i] = letter;
+                    }
+                }
+                gameState.wordDisplay = newWordDisplay;
+                
+                // Check if word is complete
+                if (!gameState.wordDisplay.includes('_')) {
+                    gameState.gameOver = true;
+                    alert(`${UI_TEXT[gameState.currentLanguage].win} ${gameState.currentWord.word}\n${UI_TEXT[gameState.currentLanguage].translation} ${gameState.currentWord[gameState.currentLanguage]}`);
+                }
+            } else {
+                gameState.tries--;
+                if (gameState.tries === 0) {
+                    gameState.gameOver = true;
+                    alert(`${UI_TEXT[gameState.currentLanguage].lose} ${gameState.currentWord.word}\n${UI_TEXT[gameState.currentLanguage].translation} ${gameState.currentWord[gameState.currentLanguage]}`);
+                }
+            }
+            
+            updateGame();
+        }
+
+        function getHint() {
+            if (gameState.hintUsed) {
+                alert(UI_TEXT[gameState.currentLanguage].hintUsed);
+                return;
+            }
+            
+            document.getElementById('translation').textContent = gameState.currentWord[gameState.currentLanguage];
+            document.getElementById('hint-text').textContent = gameState.currentWord.hint;
+            document.getElementById('hint-content').classList.remove('hidden');
+            document.getElementById('hint-btn').disabled = true;
+            gameState.hintUsed = true;
+        }
+
+        function updateGame() {
+            updateHangman();
+            updateWordDisplay();
+            updateUsedLetters();
+            updateKeyboard();
+            updateTries();
+        }
+
+        function changeLanguage(lang) {
+            gameState.currentLanguage = lang;
+            document.querySelectorAll('.language-selector').forEach(el => {
+                el.classList.remove('active');
+                if (el.dataset.lang === lang) {
+                    el.classList.add('active');
+                }
+            });
+            updateUIText();
+        }
+
+        document.getElementById('new-game-btn').addEventListener('click', startNewGame);
+        document.getElementById('hint-btn').addEventListener('click', getHint);
+        
+        document.querySelectorAll('.language-selector').forEach(el => {
+            el.addEventListener('click', () => {
+                changeLanguage(el.dataset.lang);
+            });
+        });
+
+        // Start the game
+        startNewGame();
+    </script>
+</body>
+</html> 
