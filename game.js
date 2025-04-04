@@ -271,27 +271,32 @@ function startNewGame() {
     updateGameState();
 }
 
-// Initialize game
-document.addEventListener("DOMContentLoaded", () => {
-    // Add language selector listeners
-    document.querySelectorAll(".language-selector").forEach(selector => {
-        selector.onclick = () => {
-            document.querySelectorAll(".language-selector").forEach(s => s.classList.remove("active"));
-            selector.classList.add("active");
+// Initialize the game when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Set up language selector
+    document.querySelectorAll('.language-selector').forEach(selector => {
+        selector.addEventListener('click', () => {
+            document.querySelectorAll('.language-selector').forEach(s => s.classList.remove('active'));
+            selector.classList.add('active');
             currentLanguage = selector.dataset.lang;
-            document.getElementById("used-letters-title").textContent = UI_TEXT[currentLanguage].usedLetters;
-            document.getElementById("keyboard-title").textContent = UI_TEXT[currentLanguage].keyboard;
-            document.getElementById("hint-btn").textContent = UI_TEXT[currentLanguage].hint;
-            document.getElementById("new-game-btn").textContent = UI_TEXT[currentLanguage].newGame;
-        };
+            updateUIText();
+        });
     });
 
-    // Add hint button listener
-    document.getElementById("hint-btn").onclick = showHint;
+    // Set up hint button
+    document.getElementById('hint-btn').addEventListener('click', showHint);
 
-    // Add new game button listener
-    document.getElementById("new-game-btn").onclick = startNewGame;
+    // Set up new game button
+    document.getElementById('new-game-btn').addEventListener('click', startNewGame);
 
-    // Start the game
+    // Start the first game
     startNewGame();
-}); 
+});
+
+function updateUIText() {
+    document.querySelector('h1').textContent = UI_TEXT[currentLanguage].title;
+    document.getElementById('used-letters-title').textContent = UI_TEXT[currentLanguage].usedLetters;
+    document.getElementById('keyboard-title').textContent = UI_TEXT[currentLanguage].keyboard;
+    document.getElementById('hint-btn').textContent = UI_TEXT[currentLanguage].hint;
+    document.getElementById('new-game-btn').textContent = UI_TEXT[currentLanguage].newGame;
+} 
