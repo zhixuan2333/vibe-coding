@@ -26,6 +26,7 @@
     <title>Word Guessing Game - Multilingual</title>
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
     
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
@@ -46,120 +47,56 @@
       "screenshot": "https://vibe-coding.demo.zhixuan.dev/images/word-game-preview.svg"
     }
     </script>
-    
-    <style>
-        .hangman-container {
-            font-family: monospace;
-            white-space: pre;
-            line-height: 1;
-        }
-        .letter-box {
-            transition: all 0.3s ease;
-        }
-        .letter-box:hover {
-            transform: scale(1.1);
-        }
-        .keyboard-key {
-            transition: all 0.2s ease;
-        }
-        .keyboard-key:hover {
-            transform: scale(1.1);
-        }
-        .keyboard-key.used {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-        .shake {
-            animation: shake 0.5s ease-in-out;
-        }
-        .language-selector {
-            transition: all 0.3s ease;
-        }
-        .language-selector.active {
-            background-color: #4F46E5;
-            color: white;
-        }
-        .player-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        .player-card {
-            background: #f3f4f6;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .player-card.current {
-            background: #e5e7eb;
-            border: 2px solid #4F46E5;
-        }
-        .signature {
-            font-family: 'Brush Script MT', cursive;
-            color: #4F46E5;
-            font-size: 1.5rem;
-            text-align: right;
-            margin-top: 1rem;
-        }
-    </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold text-center mb-8 text-indigo-600">Word Guessing Game</h1>
-        
-        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
-            <div class="flex justify-center mb-6">
-                <div class="language-selector active px-4 py-2 rounded-l-lg cursor-pointer" data-lang="english">English</div>
-                <div class="language-selector px-4 py-2 cursor-pointer" data-lang="chinese">中文</div>
-                <div class="language-selector px-4 py-2 cursor-pointer" data-lang="japanese">日本語</div>
-                <div class="language-selector px-4 py-2 rounded-r-lg cursor-pointer" data-lang="korean">한국어</div>
-            </div>
+<body class="bg-gray-100">
+    <div class="main-content">
+        <div class="container mx-auto px-4 py-8">
+            <h1 class="text-4xl font-bold text-center mb-8 text-indigo-600">Word Guessing Game</h1>
             
-            <div id="player-list" class="player-list mb-6"></div>
-            
-            <div class="text-center mb-8">
-                <div id="hangman" class="hangman-container text-2xl mb-4"></div>
-                <div id="word-display" class="text-4xl font-mono mb-4 flex justify-center gap-4"></div>
-                <div id="tries" class="text-xl text-gray-600 mb-4"></div>
-            </div>
-
-            <div class="mb-8">
-                <h2 class="text-xl font-semibold mb-2" id="used-letters-title">Used Letters:</h2>
-                <div id="used-letters" class="flex flex-wrap gap-2"></div>
-            </div>
-
-            <div class="mb-8">
-                <h2 class="text-xl font-semibold mb-2" id="keyboard-title">Keyboard:</h2>
-                <div id="keyboard" class="grid grid-cols-7 gap-2"></div>
-            </div>
-
-            <div class="text-center">
-                <button id="hint-btn" class="bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition-colors mb-4">
-                    Get Hint
-                </button>
-                <div id="hint-content" class="hidden mb-4 p-4 bg-purple-100 rounded-lg">
-                    <p id="translation" class="text-lg font-semibold text-purple-800"></p>
-                    <p id="hint-text" class="text-gray-700"></p>
+            <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-center mb-6">
+                    <div class="language-selector active px-4 py-2 rounded-l-lg cursor-pointer" data-lang="english">English</div>
+                    <div class="language-selector px-4 py-2 cursor-pointer" data-lang="chinese">中文</div>
+                    <div class="language-selector px-4 py-2 cursor-pointer" data-lang="japanese">日本語</div>
+                    <div class="language-selector px-4 py-2 rounded-r-lg cursor-pointer" data-lang="korean">한국어</div>
                 </div>
-                <button id="new-game-btn" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
-                    New Game
-                </button>
+                
+                <div id="player-list" class="player-list mb-6"></div>
+                
+                <div class="text-center mb-8">
+                    <div id="hangman" class="hangman-container text-2xl mb-4"></div>
+                    <div id="word-display" class="text-4xl font-mono mb-4 flex justify-center gap-4"></div>
+                    <div id="tries" class="text-xl text-gray-600 mb-4"></div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold mb-2" id="used-letters-title">Used Letters:</h2>
+                    <div id="used-letters" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold mb-2" id="keyboard-title">Keyboard:</h2>
+                    <div id="keyboard" class="grid grid-cols-7 gap-2"></div>
+                </div>
+
+                <div class="text-center">
+                    <button id="hint-btn" class="bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition-colors mb-4">
+                        Get Hint
+                    </button>
+                    <div id="hint-content" class="hidden mb-4 p-4 bg-purple-100 rounded-lg">
+                        <p id="translation" class="text-lg font-semibold text-purple-800"></p>
+                        <p id="hint-text" class="text-gray-700"></p>
+                    </div>
+                    <button id="new-game-btn" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        New Game
+                    </button>
+                </div>
             </div>
-            
-            <div class="signature">- zhixuan</div>
         </div>
     </div>
 
     <!-- Footer with social links -->
-    <footer class="bg-indigo-600 text-white py-6 mt-8">
+    <footer class="bg-indigo-600 text-white py-6">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
@@ -179,340 +116,11 @@
                 </div>
             </div>
             <div class="mt-4 text-center text-sm">
-                <p>© 2023 Vibe Coding. All rights reserved.</p>
+                <p>© 2025 Made by AI</p>
             </div>
         </div>
     </footer>
 
-    <script>
-        // Game data with translations in multiple languages
-        const WORDS = [
-            {
-                "word": "PYTHON",
-                "english": "Python Programming Language",
-                "chinese": "Python编程语言",
-                "japanese": "Pythonプログラミング言語",
-                "korean": "파이썬 프로그래밍 언어",
-                "hint": "A popular programming language known for its simple and readable syntax"
-            },
-            {
-                "word": "JAVASCRIPT",
-                "english": "JavaScript Programming Language",
-                "chinese": "JavaScript编程语言",
-                "japanese": "JavaScriptプログラミング言語",
-                "korean": "자바스크립트 프로그래밍 언어",
-                "hint": "The most commonly used programming language for web development"
-            },
-            {
-                "word": "PROGRAMMING",
-                "english": "Programming",
-                "chinese": "编程",
-                "japanese": "プログラミング",
-                "korean": "프로그래밍",
-                "hint": "The process of creating computer programs"
-            },
-            {
-                "word": "COMPUTER",
-                "english": "Computer",
-                "chinese": "计算机",
-                "japanese": "コンピュータ",
-                "korean": "컴퓨터",
-                "hint": "An electronic device for processing and storing data"
-            },
-            {
-                "word": "ALGORITHM",
-                "english": "Algorithm",
-                "chinese": "算法",
-                "japanese": "アルゴリズム",
-                "korean": "알고리즘",
-                "hint": "A step-by-step procedure for solving a problem"
-            },
-            {
-                "word": "DATABASE",
-                "english": "Database",
-                "chinese": "数据库",
-                "japanese": "データベース",
-                "korean": "데이터베이스",
-                "hint": "A system for storing and organizing data"
-            },
-            {
-                "word": "NETWORK",
-                "english": "Network",
-                "chinese": "网络",
-                "japanese": "ネットワーク",
-                "korean": "네트워크",
-                "hint": "A system that connects computers and other devices"
-            },
-            {
-                "word": "INTERNET",
-                "english": "Internet",
-                "chinese": "互联网",
-                "japanese": "インターネット",
-                "korean": "인터넷",
-                "hint": "A global system of interconnected computer networks"
-            },
-            {
-                "word": "KEYBOARD",
-                "english": "Keyboard",
-                "chinese": "键盘",
-                "japanese": "キーボード",
-                "korean": "키보드",
-                "hint": "An input device for typing text and commands"
-            },
-            {
-                "word": "MONITOR",
-                "english": "Monitor",
-                "chinese": "显示器",
-                "japanese": "モニター",
-                "korean": "모니터",
-                "hint": "A display device for computer output"
-            },
-            {
-                "word": "DEVELOPER",
-                "english": "Developer",
-                "chinese": "开发者",
-                "japanese": "開発者",
-                "korean": "개발자",
-                "hint": "A person who creates and maintains software"
-            },
-            {
-                "word": "CODING",
-                "english": "Coding",
-                "chinese": "编码",
-                "japanese": "コーディング",
-                "korean": "코딩",
-                "hint": "The process of writing computer programs"
-            },
-            {
-                "word": "HACKER",
-                "english": "Hacker",
-                "chinese": "黑客",
-                "japanese": "ハッカー",
-                "korean": "해커",
-                "hint": "A person skilled in computer systems, can be a security expert"
-            },
-            {
-                "word": "GAMING",
-                "english": "Gaming",
-                "chinese": "游戏",
-                "japanese": "ゲーミング",
-                "korean": "게이밍",
-                "hint": "The activity of playing electronic games"
-            }
-        ];
-
-        // UI text translations
-        const UI_TEXT = {
-            english: {
-                title: "Word Guessing Game",
-                usedLetters: "Used Letters:",
-                keyboard: "Keyboard:",
-                hint: "Get Hint",
-                newGame: "New Game",
-                triesLeft: "Tries Left:",
-                win: "Congratulations! You won!\nWord was:",
-                lose: "Game Over!\nWord was:",
-                hintUsed: "Hint already used",
-                letterUsed: "This letter has already been used",
-                translation: "Translation:"
-            },
-            chinese: {
-                title: "单词猜猜猜游戏",
-                usedLetters: "已使用的字母:",
-                keyboard: "键盘:",
-                hint: "获取提示",
-                newGame: "新游戏",
-                triesLeft: "剩余次数:",
-                win: "恭喜！你赢了！\n单词是:",
-                lose: "游戏结束！\n单词是:",
-                hintUsed: "提示已使用",
-                letterUsed: "这个字母已经用过了",
-                translation: "中文翻译:"
-            },
-            japanese: {
-                title: "単語当てゲーム",
-                usedLetters: "使用済みの文字:",
-                keyboard: "キーボード:",
-                hint: "ヒントを取得",
-                newGame: "新しいゲーム",
-                triesLeft: "残り回数:",
-                win: "おめでとう！勝ちました！\n単語は:",
-                lose: "ゲームオーバー！\n単語は:",
-                hintUsed: "ヒントは既に使用されています",
-                letterUsed: "この文字は既に使用されています",
-                translation: "日本語訳:"
-            },
-            korean: {
-                title: "단어 맞추기 게임",
-                usedLetters: "사용된 글자:",
-                keyboard: "키보드:",
-                hint: "힌트 얻기",
-                newGame: "새 게임",
-                triesLeft: "남은 횟수:",
-                win: "축하합니다! 승리했습니다!\n단어는:",
-                lose: "게임 오버!\n단어는:",
-                hintUsed: "힌트가 이미 사용되었습니다",
-                letterUsed: "이 글자는 이미 사용되었습니다",
-                translation: "한국어 번역:"
-            }
-        };
-
-        let currentPlayerId = null;
-        let currentGameId = null;
-        let currentPlayerName = null;
-        let eventSource = null;
-
-        function generateId() {
-            return Math.random().toString(36).substr(2, 9);
-        }
-
-        function connectToGame() {
-            currentPlayerId = generateId();
-            currentGameId = window.location.hash.slice(1) || generateId();
-            currentPlayerName = prompt("Enter your name:", "Player") || "Anonymous";
-            
-            if (!currentGameId) {
-                window.location.hash = currentGameId;
-            }
-
-            // Close existing EventSource if any
-            if (eventSource) {
-                eventSource.close();
-            }
-
-            // Create new EventSource for real-time updates
-            eventSource = new EventSource(`/api/game/${currentGameId}`);
-            
-            eventSource.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-                
-                if (data.type === "game_state") {
-                    updateGameState(data);
-                }
-            };
-
-            eventSource.onerror = () => {
-                eventSource.close();
-                setTimeout(connectToGame, 1000);
-            };
-
-            // Join the game
-            fetch(`/api/game/${currentGameId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    type: "join",
-                    player_id: currentPlayerId,
-                    player_name: currentPlayerName
-                })
-            });
-        }
-
-        function updateGameState(data) {
-            // Update word display
-            const wordDisplay = document.getElementById("word-display");
-            wordDisplay.innerHTML = data.word_display.map(letter => 
-                `<div class="letter-box">${letter}</div>`
-            ).join("");
-
-            // Update player list
-            const playerList = document.getElementById("player-list");
-            playerList.innerHTML = Object.entries(data.players).map(([pid, player]) => `
-                <div class="player-card ${pid === currentPlayerId ? 'current' : ''}">
-                    <span>${player.name}</span>
-                    <span>(${player.tries} tries)</span>
-                </div>
-            `).join("");
-
-            // Update used letters
-            const usedLetters = new Set();
-            Object.values(data.players).forEach(player => {
-                player.guessed_letters.forEach(letter => usedLetters.add(letter));
-            });
-            
-            const usedLettersDiv = document.getElementById("used-letters");
-            usedLettersDiv.innerHTML = Array.from(usedLetters).sort().map(letter =>
-                `<span class="px-2 py-1 bg-gray-200 rounded">${letter}</span>`
-            ).join("");
-
-            // Update keyboard
-            const keyboard = document.getElementById("keyboard");
-            keyboard.innerHTML = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(letter =>
-                `<button class="keyboard-key px-2 py-1 bg-indigo-100 rounded ${
-                    usedLetters.has(letter) ? 'used' : ''
-                }" ${usedLetters.has(letter) ? 'disabled' : ''}>${letter}</button>`
-            ).join("");
-
-            // Add keyboard event listeners
-            keyboard.querySelectorAll("button").forEach(button => {
-                button.onclick = () => {
-                    if (!button.disabled) {
-                        fetch(`/api/game/${currentGameId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                type: "guess",
-                                player_id: currentPlayerId,
-                                letter: button.textContent
-                            })
-                        });
-                    }
-                };
-            });
-
-            // Update game over state
-            if (data.game_over) {
-                const message = data.winner === currentPlayerId ? 
-                    "Congratulations! You won!" : 
-                    "Game Over! Better luck next time!";
-                alert(message);
-            }
-        }
-
-        function showHint(translation, hint) {
-            const hintContent = document.getElementById("hint-content");
-            const translationEl = document.getElementById("translation");
-            const hintTextEl = document.getElementById("hint-text");
-            
-            translationEl.textContent = translation;
-            hintTextEl.textContent = hint;
-            hintContent.classList.remove("hidden");
-        }
-
-        // Initialize game
-        document.addEventListener("DOMContentLoaded", () => {
-            connectToGame();
-
-            // Add hint button listener
-            document.getElementById("hint-btn").onclick = () => {
-                fetch(`/api/game/${currentGameId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        type: "hint",
-                        player_id: currentPlayerId
-                    })
-                }).then(response => response.json())
-                  .then(data => {
-                      if (data.type === "hint") {
-                          showHint(data.translation, data.hint);
-                      }
-                  });
-            };
-
-            // Add new game button listener
-            document.getElementById("new-game-btn").onclick = () => {
-                currentGameId = generateId();
-                window.location.hash = currentGameId;
-                connectToGame();
-            };
-        });
-    </script>
+    <script src="game.js"></script>
 </body>
 </html> 
