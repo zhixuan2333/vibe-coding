@@ -3,8 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word Guessing Game</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Play a fun word guessing game in multiple languages. Test your vocabulary and language skills!">
+    <meta name="keywords" content="word game, guessing game, hangman, language learning, vocabulary, multilingual">
+    <meta name="author" content="Vibe Coding">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Word Guessing Game - Multilingual">
+    <meta property="og:description" content="Play a fun word guessing game in multiple languages. Test your vocabulary and language skills!">
+    <meta property="og:image" content="https://vibe-coding.demo.zhixuan.dev/images/word-game-preview.svg">
+    <meta property="og:url" content="https://vibe-coding.demo.zhixuan.dev">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Word Guessing Game - Multilingual">
+    <meta name="twitter:description" content="Play a fun word guessing game in multiple languages. Test your vocabulary and language skills!">
+    <meta name="twitter:image" content="https://vibe-coding.demo.zhixuan.dev/images/word-game-preview.svg">
+    
+    <title>Word Guessing Game - Multilingual</title>
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Word Guessing Game",
+      "description": "Play a fun word guessing game in multiple languages. Test your vocabulary and language skills!",
+      "url": "https://vibe-coding.demo.zhixuan.dev",
+      "applicationCategory": "Game",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "screenshot": "https://vibe-coding.demo.zhixuan.dev/images/word-game-preview.svg"
+    }
+    </script>
+    
     <style>
         .hangman-container {
             font-family: monospace;
@@ -42,6 +84,31 @@
             background-color: #4F46E5;
             color: white;
         }
+        .player-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .player-card {
+            background: #f3f4f6;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .player-card.current {
+            background: #e5e7eb;
+            border: 2px solid #4F46E5;
+        }
+        .signature {
+            font-family: 'Brush Script MT', cursive;
+            color: #4F46E5;
+            font-size: 1.5rem;
+            text-align: right;
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -55,6 +122,8 @@
                 <div class="language-selector px-4 py-2 cursor-pointer" data-lang="japanese">日本語</div>
                 <div class="language-selector px-4 py-2 rounded-r-lg cursor-pointer" data-lang="korean">한국어</div>
             </div>
+            
+            <div id="player-list" class="player-list mb-6"></div>
             
             <div class="text-center mb-8">
                 <div id="hangman" class="hangman-container text-2xl mb-4"></div>
@@ -84,8 +153,36 @@
                     New Game
                 </button>
             </div>
+            
+            <div class="signature">- zhixuan</div>
         </div>
     </div>
+
+    <!-- Footer with social links -->
+    <footer class="bg-indigo-600 text-white py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-lg">Word Guessing Game - A fun way to learn vocabulary!</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="https://github.com/zhixuan2333/vibe-coding" target="_blank" class="hover:text-indigo-200 transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <a href="https://x.com/zhixuan2333" target="_blank" class="hover:text-indigo-200 transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-4 text-center text-sm">
+                <p>© 2023 Vibe Coding. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // Game data with translations in multiple languages
@@ -260,220 +357,162 @@
             }
         };
 
-        let gameId = Date.now().toString();
-        let gameState = {
-            wordDisplay: [],
-            tries: 6,
-            usedLetters: [],
-            gameOver: false,
-            currentWord: null,
-            currentLanguage: 'english',
-            hintUsed: false
-        };
+        let currentPlayerId = null;
+        let currentGameId = null;
+        let currentPlayerName = null;
+        let eventSource = null;
 
-        const hangmanStages = [
-            `💀
-/|\\
-/ | \\
-/  |  \\
-   |
-   |
-  / \\
- /   \\`,
-            `😱
-/|\\
-/ | \\
-/  |  \\
-   |
-   |
-  / \\
- /   `,
-            `😨
-/|\\
-/ | \\
-/  |  \\
-   |
-   |
-  / 
- /   `,
-            `😰
-/|\\
-/ | \\
-/  |  \\
-   |
-   |
-   
-  /   `,
-            `😅
-/|\\
-/ | \\
-/  |  \\
-   |
-   |
-   
-   `,
-            `😊
-/|\\
-/ | \\
-/  |  \\
-   |
-   
-   
-   `,
-            `😎
-/|\\
-/ | \\
-/  |  
-   |
-   
-   
-   `
-        ];
-
-        function updateHangman() {
-            document.getElementById('hangman').textContent = hangmanStages[6 - gameState.tries];
+        function generateId() {
+            return Math.random().toString(36).substr(2, 9);
         }
 
-        function updateWordDisplay() {
-            const wordDisplay = document.getElementById('word-display');
-            wordDisplay.innerHTML = gameState.wordDisplay
-                .map(letter => `<div class="letter-box w-12 h-12 flex items-center justify-center border-2 border-indigo-500 rounded-lg text-2xl">${letter}</div>`)
-                .join('');
-        }
-
-        function updateUsedLetters() {
-            const usedLettersDiv = document.getElementById('used-letters');
-            usedLettersDiv.innerHTML = gameState.usedLetters
-                .map(letter => `<span class="px-3 py-1 bg-gray-200 rounded-full">${letter}</span>`)
-                .join('');
-        }
-
-        function updateKeyboard() {
-            const keyboard = document.getElementById('keyboard');
-            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-            keyboard.innerHTML = alphabet
-                .map(letter => `
-                    <button class="keyboard-key px-4 py-2 bg-indigo-100 rounded-lg hover:bg-indigo-200 ${gameState.usedLetters.includes(letter) ? 'used' : ''}"
-                            ${gameState.usedLetters.includes(letter) || gameState.gameOver ? 'disabled' : ''}
-                            onclick="guessLetter('${letter}')">
-                        ${letter}
-                    </button>
-                `)
-                .join('');
-        }
-
-        function updateTries() {
-            document.getElementById('tries').textContent = `${UI_TEXT[gameState.currentLanguage].triesLeft} ${gameState.tries}`;
-        }
-
-        function updateUIText() {
-            document.querySelector('h1').textContent = UI_TEXT[gameState.currentLanguage].title;
-            document.getElementById('used-letters-title').textContent = UI_TEXT[gameState.currentLanguage].usedLetters;
-            document.getElementById('keyboard-title').textContent = UI_TEXT[gameState.currentLanguage].keyboard;
-            document.getElementById('hint-btn').textContent = UI_TEXT[gameState.currentLanguage].hint;
-            document.getElementById('new-game-btn').textContent = UI_TEXT[gameState.currentLanguage].newGame;
-            updateTries();
-        }
-
-        function startNewGame() {
-            const wordData = WORDS[Math.floor(Math.random() * WORDS.length)];
-            gameState.currentWord = wordData;
+        function connectToGame() {
+            currentPlayerId = generateId();
+            currentGameId = window.location.hash.slice(1) || generateId();
+            currentPlayerName = prompt("Enter your name:", "Player") || "Anonymous";
             
-            gameState = {
-                wordDisplay: Array(wordData.word.length).fill('_'),
-                tries: 6,
-                usedLetters: [],
-                gameOver: false,
-                currentWord: wordData,
-                currentLanguage: gameState.currentLanguage,
-                hintUsed: false
-            };
-            
-            document.getElementById('hint-content').classList.add('hidden');
-            document.getElementById('hint-btn').disabled = false;
-            
-            updateGame();
-        }
-
-        function guessLetter(letter) {
-            if (gameState.gameOver || gameState.usedLetters.includes(letter)) {
-                const wordDisplay = document.getElementById('word-display');
-                wordDisplay.classList.add('shake');
-                setTimeout(() => wordDisplay.classList.remove('shake'), 500);
-                return;
+            if (!currentGameId) {
+                window.location.hash = currentGameId;
             }
+
+            // Close existing EventSource if any
+            if (eventSource) {
+                eventSource.close();
+            }
+
+            // Create new EventSource for real-time updates
+            eventSource = new EventSource(`/api/game/${currentGameId}`);
             
-            gameState.usedLetters.push(letter);
-            
-            if (gameState.currentWord.word.includes(letter)) {
-                // Update word display with the correct letter
-                const newWordDisplay = [...gameState.wordDisplay];
-                for (let i = 0; i < gameState.currentWord.word.length; i++) {
-                    if (gameState.currentWord.word[i] === letter) {
-                        newWordDisplay[i] = letter;
-                    }
-                }
-                gameState.wordDisplay = newWordDisplay;
+            eventSource.onmessage = (event) => {
+                const data = JSON.parse(event.data);
                 
-                // Check if word is complete
-                if (!gameState.wordDisplay.includes('_')) {
-                    gameState.gameOver = true;
-                    alert(`${UI_TEXT[gameState.currentLanguage].win} ${gameState.currentWord.word}\n${UI_TEXT[gameState.currentLanguage].translation} ${gameState.currentWord[gameState.currentLanguage]}`);
+                if (data.type === "game_state") {
+                    updateGameState(data);
                 }
-            } else {
-                gameState.tries--;
-                if (gameState.tries === 0) {
-                    gameState.gameOver = true;
-                    alert(`${UI_TEXT[gameState.currentLanguage].lose} ${gameState.currentWord.word}\n${UI_TEXT[gameState.currentLanguage].translation} ${gameState.currentWord[gameState.currentLanguage]}`);
-                }
-            }
-            
-            updateGame();
-        }
+            };
 
-        function getHint() {
-            if (gameState.hintUsed) {
-                alert(UI_TEXT[gameState.currentLanguage].hintUsed);
-                return;
-            }
-            
-            document.getElementById('translation').textContent = gameState.currentWord[gameState.currentLanguage];
-            document.getElementById('hint-text').textContent = gameState.currentWord.hint;
-            document.getElementById('hint-content').classList.remove('hidden');
-            document.getElementById('hint-btn').disabled = true;
-            gameState.hintUsed = true;
-        }
+            eventSource.onerror = () => {
+                eventSource.close();
+                setTimeout(connectToGame, 1000);
+            };
 
-        function updateGame() {
-            updateHangman();
-            updateWordDisplay();
-            updateUsedLetters();
-            updateKeyboard();
-            updateTries();
-        }
-
-        function changeLanguage(lang) {
-            gameState.currentLanguage = lang;
-            document.querySelectorAll('.language-selector').forEach(el => {
-                el.classList.remove('active');
-                if (el.dataset.lang === lang) {
-                    el.classList.add('active');
-                }
+            // Join the game
+            fetch(`/api/game/${currentGameId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    type: "join",
+                    player_id: currentPlayerId,
+                    player_name: currentPlayerName
+                })
             });
-            updateUIText();
         }
 
-        document.getElementById('new-game-btn').addEventListener('click', startNewGame);
-        document.getElementById('hint-btn').addEventListener('click', getHint);
-        
-        document.querySelectorAll('.language-selector').forEach(el => {
-            el.addEventListener('click', () => {
-                changeLanguage(el.dataset.lang);
+        function updateGameState(data) {
+            // Update word display
+            const wordDisplay = document.getElementById("word-display");
+            wordDisplay.innerHTML = data.word_display.map(letter => 
+                `<div class="letter-box">${letter}</div>`
+            ).join("");
+
+            // Update player list
+            const playerList = document.getElementById("player-list");
+            playerList.innerHTML = Object.entries(data.players).map(([pid, player]) => `
+                <div class="player-card ${pid === currentPlayerId ? 'current' : ''}">
+                    <span>${player.name}</span>
+                    <span>(${player.tries} tries)</span>
+                </div>
+            `).join("");
+
+            // Update used letters
+            const usedLetters = new Set();
+            Object.values(data.players).forEach(player => {
+                player.guessed_letters.forEach(letter => usedLetters.add(letter));
             });
+            
+            const usedLettersDiv = document.getElementById("used-letters");
+            usedLettersDiv.innerHTML = Array.from(usedLetters).sort().map(letter =>
+                `<span class="px-2 py-1 bg-gray-200 rounded">${letter}</span>`
+            ).join("");
+
+            // Update keyboard
+            const keyboard = document.getElementById("keyboard");
+            keyboard.innerHTML = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(letter =>
+                `<button class="keyboard-key px-2 py-1 bg-indigo-100 rounded ${
+                    usedLetters.has(letter) ? 'used' : ''
+                }" ${usedLetters.has(letter) ? 'disabled' : ''}>${letter}</button>`
+            ).join("");
+
+            // Add keyboard event listeners
+            keyboard.querySelectorAll("button").forEach(button => {
+                button.onclick = () => {
+                    if (!button.disabled) {
+                        fetch(`/api/game/${currentGameId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                type: "guess",
+                                player_id: currentPlayerId,
+                                letter: button.textContent
+                            })
+                        });
+                    }
+                };
+            });
+
+            // Update game over state
+            if (data.game_over) {
+                const message = data.winner === currentPlayerId ? 
+                    "Congratulations! You won!" : 
+                    "Game Over! Better luck next time!";
+                alert(message);
+            }
+        }
+
+        function showHint(translation, hint) {
+            const hintContent = document.getElementById("hint-content");
+            const translationEl = document.getElementById("translation");
+            const hintTextEl = document.getElementById("hint-text");
+            
+            translationEl.textContent = translation;
+            hintTextEl.textContent = hint;
+            hintContent.classList.remove("hidden");
+        }
+
+        // Initialize game
+        document.addEventListener("DOMContentLoaded", () => {
+            connectToGame();
+
+            // Add hint button listener
+            document.getElementById("hint-btn").onclick = () => {
+                fetch(`/api/game/${currentGameId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        type: "hint",
+                        player_id: currentPlayerId
+                    })
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.type === "hint") {
+                          showHint(data.translation, data.hint);
+                      }
+                  });
+            };
+
+            // Add new game button listener
+            document.getElementById("new-game-btn").onclick = () => {
+                currentGameId = generateId();
+                window.location.hash = currentGameId;
+                connectToGame();
+            };
         });
-
-        // Start the game
-        startNewGame();
     </script>
 </body>
 </html> 
